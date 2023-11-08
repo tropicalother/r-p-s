@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Rock Paper Scissors</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div id="displayContainer"></div>
+</body>
+
   <script>
     // Your JavaScript goes here!
     function getComputerChoice()
@@ -23,17 +27,77 @@
                 return "scissors";
                 }
     }
+    let gameOver = false;
+    let playerScore = 0;
+    let computerScore = 0;
 
+    const displayContainer = document.querySelector('div')
+    displayContainer.classList.add('flex-container')
 
-    function playRound(playerSelection, computerSelection)
+    const psDisplay = document.createElement('h2')
+    const csDisplay = document.createElement('h2')
+    const announcements = document.createElement('h1')
+    const rock = document.createElement('img')
+    const paper = document.createElement('img')
+    const scissors = document.createElement('img')
+
+    rock.src = './images/Rock.jpg'
+    paper.src = './images/Paper.jpg'
+    scissors.src = './images/Scissors.jpeg'
+    psDisplay.textContent = ("Your score: " + playerScore)
+    csDisplay.textContent = ("Opponent's score: " + computerScore)
+    announcements.textContent = "Let's play a game."
+
+    displayContainer.append(announcements, psDisplay,csDisplay, rock, paper, scissors)
+
+    function resolveScore(winner)
     {
-        playerSelection = playerSelection.toLowerCase();
-        computerSelection = computerSelection.toLowerCase();
+        if (winner == 0)
+            {
+                computerScore++
+                csDisplay.textContent = ("Opponent's score: " + computerScore)
+                if (computerScore==5)
+                    {
+                gameOver = true;    
+                announcements.textContent = "YOU LOST! BOOOOOO!"
+                    }
+            }
+        else if (winner == 1)
+        {
+                playerScore++
+                psDisplay.textContent = ("Your score: " + playerScore)
+                if (playerScore==5)
+                    {
+                gameOver = true;    
+                announcements.textContent = "YOU WON! CONGRATULATIONS."
+                    }
+            }
+    }
 
+    rock.addEventListener('click', () =>{
+        let result = playRound(gameOver, 'rock', getComputerChoice())
+        resolveScore(result)
+    })
+
+    paper.addEventListener('click', () =>{
+        let result = playRound(gameOver, 'paper', getComputerChoice())
+        resolveScore(result)
+    })
+
+    scissors.addEventListener('click', () =>{
+        let result = playRound(gameOver, 'scissors', getComputerChoice())
+        resolveScore(result)
+    })
+
+
+
+    function playRound(noGame, playerSelection, computerSelection)
+    {
+        if (noGame == true)
+            return null
         if (playerSelection == computerSelection)
         {
-            console.log("It's a draw.")
-            return 2 
+            announcements.textContent = ("It's a draw.")
         }
             else
             {
@@ -41,12 +105,12 @@
                 {
                     if (computerSelection == "paper")
                         {
-                            console.log("You chose rock, they chose paper. You lose.")
+                            announcements.textContent = ("You chose rock, they chose paper. You lose.")
                             return 0
                         }
                     else
                         {
-                            console.log("You chose rock, they chose scissors. You win.")
+                            announcements.textContent = ("You chose rock, they chose scissors. You win.")
                             return 1                        
                         }
                 }
@@ -54,12 +118,12 @@
                 {
                     if (computerSelection == "rock")
                         {
-                            console.log("You chose paper, they chose rock. You win.")
+                            announcements.textContent = ("You chose paper, they chose rock. You win.")
                             return 1
                         }
                     else
                         {
-                            console.log("You chose paper, they chose scissors. You lose.")
+                            announcements.textContent = ("You chose paper, they chose scissors. You lose.")
                             return 0
                         }
                 }
@@ -68,60 +132,17 @@
                   {
                     if (computerSelection == "rock")
                         {
-                            console.log("You chose scissors, they chose rock. You lose.")
+                            announcements.textContent = ("You chose scissors, they chose rock. You lose.")
                             return 0
                         }
                     else
                         {
-                            console.log("You chose scissors, they chose paper. You win.")
+                            announcements.textContent = ("You chose scissors, they chose paper. You win.")
                             return 1
                         }
                 }
             }
     }
 
-    function game()
-    {
-        let pScore = 0;
-        let cScore = 0;
-        let whoWon = 0;
-
-        for (i=0; i<999; i++)
-        {
-        console.log("Player score: " + pScore + "\nComputer score: " + cScore + "\nThe game will go until someone reaches 5 points.")
-        
-
-            
-        whoWon = playRound(prompt("Choose rock, paper, or scissors."), getComputerChoice())
-        
-        if (whoWon == 0)
-            cScore++;
-        else if (whoWon == 1)
-            pScore++;
-
-
-        if (pScore == 5)
-        {
-            console.log("Congratulations, you won.")
-            break
-        }
-        if (cScore == 5)
-        {
-            console.log("Too bad, you lost.")
-            break
-        }
-
-
-    }
-    }
-
-    game();
-    /*
-    console.log(playRound(prompt("Choose rock, paper, or scissors."), getComputerChoice))
-        console.log(playRound(prompt("Choose rock, paper, or scissors."), getComputerChoice))
-            console.log(playRound(prompt("Choose rock, paper, or scissors."), getComputerChoice))
-                console.log(playRound(prompt("Choose rock, paper, or scissors."), getComputerChoice))
-*/
   </script>
-</body>
 </html>
